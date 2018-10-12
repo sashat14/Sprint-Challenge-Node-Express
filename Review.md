@@ -1,6 +1,7 @@
 # Review Questions
 
 ## What is Node.js?
+    -A javascript runtime environment. It runs other programs.
 
 ## What is Express?
 
