@@ -63,6 +63,15 @@ server.delete('/api/projects/:id', (req, res) => {
     })
 })
 
+server.get('/api/projects/:id/actions', (req, res) => {
+    const id = req.params.id;
+    projectDb.getProjectActions(id)
+    .then(projectActions => {
+        res.status(200).json(projectActions);
+    })
+    .catch(err => res.send(err.message));
+})
+
 //=====================Action Endpoints Start Here=============================== 
 
 server.get('/api/actions', (req, res) => {
