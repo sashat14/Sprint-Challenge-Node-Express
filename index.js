@@ -7,6 +7,8 @@ const port = 7000;
 const server = express();
 server.use(express.json());
 
+//========================Project Endpoints Start Here==============================
+
 server.get('/', (req,res) => {
     res.send("Welcome to your new project");
 })
@@ -61,12 +63,58 @@ server.delete('/api/projects/:id', (req, res) => {
     })
 })
 
+//=====================Action Endpoints Start Here=============================== 
 
+server.get('/api/actions', (req, res) => {
+    actionDb.get()
+    .then(actions => {
+        res.status(200).json(actions);
+    })
+    .catch(err => {
+        res.send(err.message);
+    })
+})
 
+server.get('/api/actions/:id', (req, res) => {
+    const id = req.params.id;
+    actionDb.get(id)
+    .then(action => {
+        res.status(200).json(action);
+    })
+    .catch(err => res.send(err.message));
+})
 
+server.post('/api/actions', (req, res) => {
+    const { project_id, description, notes, completed } = req.body;
+    const newAction = { project_id, description, notes, completed };
+    actionDb.insert(newAction)
+    .then(action => {
+        res.status(201).json(action);
+    })
+    .catch(err => res.send(err.message));
+})
 
+server.put('/api/actions/:id', (req, res) => {
+    const id = req.params.id
+    const { project_id, description, notes, completed } = req.body;
+    const editedAction = { project_id, description, notes, completed };
+    actionDb.update(id, editedAction)
+    .then(action => {
+        res.status(200).json(action)
+    })
+    .catch(err => res.send(err.message));
+})
 
-
+server.delete('/api/actions/:id', (req, res) => {
+    const id = req.params.id;
+    actionDb.remove(id)
+    .then(removedAction => {
+        res.send(`${removedAction} action removed from database`);
+    })
+    .catch(err => {
+        res.send(err.message);
+    })
+})
 
 
 server.listen(port, () => {
